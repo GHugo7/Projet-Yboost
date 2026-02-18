@@ -1,0 +1,18 @@
+body {
+    font-family: Arial;
+    background: #0f172a;
+    color: white;
+    padding: 40px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: #1e293b;
+    padding: 20px;
+    border-radius: 12px;
+}
