@@ -20,7 +20,7 @@ public class SkillService {
         skillRepository.save(skill);
     }
 
-    public List<Skill> getAllSkills() {
+    public List<Skill> getAll() {
         return skillRepository.findAll();
     }
 }
