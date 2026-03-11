@@ -35,7 +35,7 @@ public class HomeController {
 
     @GetMapping("/test-db")
     public String testDatabase() {
-        Skill skill = new Skill("Java", "Programmation backend", "Dev");
+        Skill skill = new Skill("Java", "Programmation backend", 6);
         skillService.addSkill(skill);
         return "Skill ajoutée";
     }
