@@ -32,4 +32,11 @@ public class HomeController {
         skillService.addSkill(skill);
         return "redirect:/";
     }
+
+    @GetMapping("/test-db")
+    public String testDatabase() {
+        Skill skill = new Skill("Java", "Programmation backend", "Dev");
+        skillService.addSkill(skill);
+        return "Skill ajoutée";
+    }
 }
