@@ -1,4 +1,5 @@
-/home/hugo/Documents/Cours/yBoost/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/SkillforgeApplication.java
-/home/hugo/Documents/Cours/yBoost/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/controller/HomeController.java
-/home/hugo/Documents/Cours/yBoost/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/model/Skill.java
-/home/hugo/Documents/Cours/yBoost/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/service/SkillService.java
+/home/hugo/Documents/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/SkillforgeApplication.java
+/home/hugo/Documents/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/controller/HomeController.java
+/home/hugo/Documents/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/model/Skill.java
+/home/hugo/Documents/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/repository/SkillRepository.java
+/home/hugo/Documents/Projet-Yboost/skillforge/src/main/java/com/example/skillforge/service/SkillService.java
