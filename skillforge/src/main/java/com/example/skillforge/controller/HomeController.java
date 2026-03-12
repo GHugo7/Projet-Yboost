@@ -33,10 +33,23 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @GetMapping("/test-db")
-    public String testDatabase() {
-        Skill skill = new Skill("Java", "Programmation backend", 5);
+    @GetMapping("/delete/{id}")
+    public String deleteSkill(@PathVariable Long id) {
+        skillService.deleteSkill(id);
+        return "redirect:/";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editSkill(@ModelAttribute Skill skill) {
         skillService.addSkill(skill);
         return "redirect:/";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String editSkill(@PathVariable Long id, Model model) {
+
+        Skill skill = skillService.editSkillById(id);
+        model.addAttribute("skill", skill);
+        return "edit";
     }
 }

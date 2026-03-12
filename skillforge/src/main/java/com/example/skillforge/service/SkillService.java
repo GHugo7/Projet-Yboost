@@ -20,6 +20,14 @@ public class SkillService {
         skillRepository.save(skill);
     }
 
+    public void deleteSkill(Long id) {
+        skillRepository.deleteById(id);
+    }
+
+    public Skill editSkillById(Long id) {
+        return skillRepository.findById(id).orElseThrow(() -> new RuntimeException("Skill not found"));
+    }
+
     public List<Skill> getAll() {
         return skillRepository.findAll();
     }
