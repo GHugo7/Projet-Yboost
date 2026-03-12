@@ -8,7 +8,13 @@
 
 <h1>My Skills</h1>
 
-<a href="/add">Add Skill</a>
+<a th:href="/login">Login</a>
+<a th:href="/logout">Logout</a>
+<a th:href="/register">Register</a>
+
+<a th:href="/export">Export Skills</a>
+
+<a th:href="/add">Add Skill</a>
 
 <div class="grid">
     <div class="card" th:each="skill : ${skills}">
