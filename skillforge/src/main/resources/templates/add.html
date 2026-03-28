@@ -1,18 +1,74 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <title>Add Skill</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkillForge — Ajouter</title>
+  <link rel="stylesheet" th:href="@{/style.css}"/>
 </head>
-<body>
+<body class="form-page">
 
-<h1>Add Skill</h1>
+<nav>
+  <div class="logo">Skill<span>Forge</span></div>
+  <div class="nav-links">
+    <a th:href="@{/}" class="nav-link">Compétences</a>
+    <a th:href="@{/export}" class="nav-link">Exporter</a>
+    <button class="nav-btn" onclick="location.href='/add'">+ Ajouter</button>
+  </div>
+</nav>
 
-<form th:action="@{/add}" method="post" th:object="${skill}">
-    <input type="text" th:field="*{name}" placeholder="Skill name" required>
-    <input type="text" th:field="*{category}" placeholder="Category" required>
-    <input type="number" th:field="*{level}" min="1" max="5" required>
-    <button type="submit">Save</button>
-</form>
+<div class="form-container">
+  <div class="nm-raised form-card">
+    <p class="form-eyebrow">Nouvelle entrée</p>
+    <h1 class="form-title">Ajouter une <em>compétence</em></h1>
+
+    <form th:action="@{/add}" th:object="${skill}" method="post">
+
+      <div class="form-group">
+        <label class="form-label" for="name">Nom</label>
+        <input class="form-input" type="text" id="name" th:field="*{name}"
+               placeholder="ex : Java, Figma, SQL…" required/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="category">Catégorie</label>
+        <input class="form-input" type="text" id="category" th:field="*{category}"
+               placeholder="ex : Backend, Design, DevOps…"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Niveau</label>
+        <div class="stars-input">
+          <button type="button" class="star-btn" th:each="i : ${#numbers.sequence(1,5)}"
+                  th:text="${i}" th:attr="data-val=${i}" onclick="setLevel(this)">1</button>
+        </div>
+        <input type="hidden" id="level" th:field="*{level}"/>
+      </div>
+
+      <div class="form-actions">
+        <a th:href="@{/}"><button type="button" class="btn-cancel">Annuler</button></a>
+        <button type="submit" class="btn-submit">Ajouter la compétence</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  function setLevel(btn) {
+    const val = parseInt(btn.getAttribute('data-val'));
+    document.getElementById('level').value = val;
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.classList.toggle('active', i < val);
+    });
+  }
+  const current = parseInt(document.getElementById('level').value) || 0;
+  if (current > 0) {
+    document.querySelectorAll('.star-btn').forEach((b, i) => {
+      b.classList.toggle('active', i < current);
+    });
+  }
+</script>
 
 </body>
 </html>

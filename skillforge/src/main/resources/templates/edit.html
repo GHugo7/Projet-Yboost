@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SkillForge — Ajouter</title>
+  <title>SkillForge — Modifier</title>
   <link rel="stylesheet" th:href="@{/style.css}"/>
 </head>
 <body class="form-page">
@@ -19,10 +19,11 @@
 
 <div class="form-container">
   <div class="nm-raised form-card">
-    <p class="form-eyebrow">Nouvelle entrée</p>
-    <h1 class="form-title">Ajouter une <em>compétence</em></h1>
+    <p class="form-eyebrow">Mise à jour</p>
+    <h1 class="form-title">Modifier la <em>compétence</em></h1>
 
-    <form th:action="@{/add}" th:object="${skill}" method="post">
+    <form th:action="@{/edit/{id}(id=${skill.id})}" th:object="${skill}" method="post">
+      <input type="hidden" th:field="*{id}"/>
 
       <div class="form-group">
         <label class="form-label" for="name">Nom</label>
@@ -47,7 +48,7 @@
 
       <div class="form-actions">
         <a th:href="@{/}"><button type="button" class="btn-cancel">Annuler</button></a>
-        <button type="submit" class="btn-submit">Ajouter la compétence</button>
+        <button type="submit" class="btn-submit">Enregistrer les modifications</button>
       </div>
 
     </form>

@@ -15,7 +15,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>4.0.2</version>
+        <version>4.0.5</version>
     </parent>
 
     <properties>
@@ -33,8 +33,6 @@
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
 
-
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -48,6 +46,11 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         
     </dependencies>

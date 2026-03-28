@@ -17,7 +17,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("skills", skillService.getAll());
+        model.addAttribute("skills",              skillService.getAll());
+        model.addAttribute("categories",          skillService.countCategories());
+        model.addAttribute("avgLevel",            skillService.getAverageLevel());
+        model.addAttribute("mastered",            skillService.countMastered());
+        model.addAttribute("progressByCategory",  skillService.getProgressByCategory());
         return "index";
     }
 
@@ -39,17 +43,15 @@ public class HomeController {
         return "redirect:/";
     }
 
-    @PostMapping("/edit/{id}")
-    public String editSkill(@ModelAttribute Skill skill) {
-        skillService.addSkill(skill);
-        return "redirect:/";
+    @GetMapping("/edit/{id}")
+    public String editForm(@PathVariable Long id, Model model) {
+        model.addAttribute("skill", skillService.editSkillById(id));
+        return "edit";
     }
 
-    @GetMapping("/edit/{id}")
-    public String editSkill(@PathVariable Long id, Model model) {
-
-        Skill skill = skillService.editSkillById(id);
-        model.addAttribute("skill", skill);
-        return "edit";
+    @PostMapping("/edit/{id}")
+    public String editSkill(@PathVariable Long id, @ModelAttribute Skill skill) {
+        skillService.updateSkill(id, skill);
+        return "redirect:/";
     }
 }
