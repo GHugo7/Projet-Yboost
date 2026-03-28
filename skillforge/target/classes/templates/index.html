@@ -12,10 +12,48 @@
   <div class="logo">Skill<span>Forge</span></div>
   <div class="nav-links">
     <a class="nav-link active">Compétences</a>
-    <a th:href="@{/export}" class="nav-link">Exporter</a>
+    <button class="nav-link" onclick="document.getElementById('exportModal').classList.add('open')">
+      Exporter
+    </button>
+    <form th:action="@{/logout}" method="post" style="margin:0;">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      <button type="submit" class="nav-link" style="border:none;background:none;cursor:pointer;">
+        Déconnexion
+      </button>
+    </form>
     <button class="nav-btn" onclick="location.href='/add'">+ Ajouter</button>
   </div>
 </nav>
+
+<div class="modal-overlay" id="exportModal" onclick="closeModal(event)">
+  <div class="modal-card nm-raised">
+    <p class="form-eyebrow">Choisir un format</p>
+    <h2 class="form-title" style="font-size:22px;">Exporter mes <em>compétences</em></h2>
+
+    <div class="export-options">
+      <a th:href="@{/export/pdf}" class="export-option nm-raised">
+        <span class="export-option-icon">📄</span>
+        <span class="export-option-label">PDF</span>
+        <span class="export-option-desc">Mise en page prête à imprimer</span>
+      </a>
+      <a th:href="@{/export/csv}" class="export-option nm-raised">
+        <span class="export-option-icon">📊</span>
+        <span class="export-option-label">CSV</span>
+        <span class="export-option-desc">Compatible Excel / Sheets</span>
+      </a>
+      <a th:href="@{/export/json}" class="export-option nm-raised">
+        <span class="export-option-icon">📦</span>
+        <span class="export-option-label">JSON</span>
+        <span class="export-option-desc">Pour les développeurs</span>
+      </a>
+    </div>
+
+    <button class="btn-cancel" style="width:100%;margin-top:1.5rem;border-radius:50px;"
+            onclick="document.getElementById('exportModal').classList.remove('open')">
+      Annuler
+    </button>
+  </div>
+</div>
 
 <div class="hero">
   <div>
@@ -86,6 +124,7 @@
       <p class="quote-author">— Niels Bohr</p>
     </div>
 
+
     <div class="nm-raised progress-card">
       <p class="progress-title">Progression par catégorie</p>
       <p class="progress-sub">Continuez à progresser</p>
@@ -100,14 +139,18 @@
       </div>
     </div>
   </div>
+    
+  <div class="hint">
+    <p class="hint-title">Indication</p>
+    <p class="hint-text">- 1 étoile = niveau 1 = débutant</p>
+    <p class="hint-text">- 2 étoiles = niveau 2 = intermédiaire</p>
+    <p class="hint-text">- 3 étoiles = niveau 3 = avancé</p>
+    <p class="hint-text">- 4 étoiles = niveau 4 = expert</p>
+    <p class="hint-text">- 5 étoiles = niveau 5 = maître</p>
+  </div>
 </div>
 
-<script>
-  const now = new Date();
-  const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
-  document.getElementById('date-day').textContent = now.getDate();
-  document.getElementById('date-month').textContent = months[now.getMonth()] + ' ' + now.getFullYear();
-</script>
+<script th:src="@{/JavaScript/main.js}"></script>
 
 </body>
 </html>

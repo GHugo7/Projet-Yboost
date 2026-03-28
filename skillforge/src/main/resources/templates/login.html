@@ -1,11 +1,65 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Login</title>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkillForge — Connexion</title>
+  <link rel="stylesheet" th:href="@{/style.css}"/>
 </head>
-<body>
-    
+<body class="form-page">
+
+<nav>
+  <div class="logo">Skill<span>Forge</span></div>
+  <div class="nav-links">
+    <a th:href="@{/register}" class="nav-link">Créer un compte</a>
+  </div>
+</nav>
+
+<div class="form-container">
+  <div class="nm-raised form-card">
+    <p class="form-eyebrow">Bienvenue</p>
+    <h1 class="form-title">Se <em>connecter</em></h1>
+
+    <div th:if="${error}"
+         style="background:#fdecea;color:#c0392b;border-radius:10px;padding:0.75rem 1rem;font-size:13px;margin-bottom:1.5rem;">
+      <span th:text="${error}"></span>
+    </div>
+    <div th:if="${logout}"
+         style="background:#eaf6ee;color:#27ae60;border-radius:10px;padding:0.75rem 1rem;font-size:13px;margin-bottom:1.5rem;">
+      <span th:text="${logout}"></span>
+    </div>
+    <div th:if="${param.registered}"
+         style="background:#eaf6ee;color:#27ae60;border-radius:10px;padding:0.75rem 1rem;font-size:13px;margin-bottom:1.5rem;">
+      Compte créé avec succès ! Vous pouvez vous connecter.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+      <div class="form-group">
+        <label class="form-label" for="username">Nom d'utilisateur</label>
+        <input class="form-input" type="text" id="username" name="username"
+               placeholder="votre identifiant" required autofocus/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Mot de passe</label>
+        <input class="form-input" type="password" id="password" name="password"
+               placeholder="••••••••" required/>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-submit">Se connecter</button>
+      </div>
+
+    </form>
+
+    <p style="text-align:center;margin-top:1.5rem;font-size:13px;color:var(--text-4);">
+      Pas encore de compte ?
+      <a th:href="@{/register}" style="color:var(--accent);font-weight:500;">Créer un compte</a>
+    </p>
+  </div>
+</div>
+
 </body>
 </html>

@@ -1,5 +1,5 @@
 com\example\skillforge\SkillforgeApplication.class
+com\example\skillforge\repository\SkillRepository.class
 com\example\skillforge\model\Skill.class
 com\example\skillforge\service\SkillService.class
 com\example\skillforge\controller\HomeController.class
-com\example\skillforge\repository\SkillRepository.class

@@ -296,6 +296,26 @@ nav {
 .prog-bar { height: 5px; border-radius: 50px; overflow: hidden; }
 .prog-fill { height: 100%; border-radius: 50px; background: var(--accent); }
 
+/* ─── Indication ────────────────────────────────────── */
+.hint {
+  padding: 1.25rem;
+  background: var(--bg);
+  box-shadow: 6px 6px 14px var(--shadow-d), -6px -6px 14px var(--shadow-l);
+  border-radius: var(--radius);
+}
+.hint-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-1);
+  margin-bottom: 0.75rem;
+}
+.hint-text {
+  font-size: 11px;
+  color: var(--text-3);
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+
 /* ─── Formulaires (add / edit) ───────────────────────── */
 .form-page {
   min-height: 100vh;
@@ -393,3 +413,79 @@ nav {
   transition: color 0.2s;
 }
 .btn-cancel:hover { color: var(--text-1); }
+
+/* ─── Exportation ────────────────────────────────────── */  
+.export-dropdown { position: relative; }
+.export-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: var(--bg);
+  box-shadow: 6px 6px 14px var(--shadow-d), -6px -6px 14px var(--shadow-l);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  min-width: 140px;
+  z-index: 100;
+}
+.export-menu.open { display: block; }
+.export-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  font-size: 13px;
+  color: var(--text-2);
+  transition: background 0.15s, color 0.15s;
+}
+.export-item:hover { background: var(--shadow-d); color: var(--accent); }
+.export-icon { font-size: 14px; }
+
+/* ─── Modale export ──────────────────────────────────── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(30, 37, 53, 0.4);
+  z-index: 200;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open {
+  display: flex;
+}
+.modal-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 2rem;
+  margin: 1rem;
+}
+.export-options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 1.5rem;
+}
+.export-option {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 1rem 1.25rem;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+}
+.export-option:hover {
+  box-shadow: 9px 9px 18px var(--shadow-d), -9px -9px 18px var(--shadow-l);
+}
+.export-option-icon { font-size: 22px; }
+.export-option-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-1);
+  flex: 1;
+}
+.export-option-desc {
+  font-size: 11px;
+  color: var(--text-4);
+  font-weight: 300;
+}

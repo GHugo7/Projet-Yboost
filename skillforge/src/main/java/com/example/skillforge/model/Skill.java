@@ -20,6 +20,10 @@ public class Skill {
     @Column(name = "skill_level")
     private int level;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Skill() {}
 
     public Skill(String name, String category, int level) {
@@ -27,14 +31,16 @@ public class Skill {
         this.category = category;
         this.level = level;
     }
+    
+    public Long getId()       { return id; }
+    public String getName()   { return name; }
+    public String getCategory(){ return category; }
+    public int getLevel()     { return level; }
+    public User getUser()     { return user; }
 
-    public Long getId() { return id; }
-    public String getName() { return name; }
-    public String getCategory() { return category; }
-    public int getLevel() { return level; }
-
-    public void setName(String name) { this.name = name; }
-    public void setCategory(String category) { this.category = category; }
-    public void setLevel(int level) { this.level = level; }
-    public void setId(Long id) { this.id = id; }
+    public void setId(Long id)          { this.id = id; }
+    public void setName(String name)    { this.name = name; }
+    public void setCategory(String c)   { this.category = c; }
+    public void setLevel(int level)     { this.level = level; }
+    public void setUser(User user)      { this.user = user; }
 }

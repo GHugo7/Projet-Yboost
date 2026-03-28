@@ -1,7 +1,10 @@
 package com.example.skillforge.service;
 
 import com.example.skillforge.model.Skill;
+import com.example.skillforge.model.User;
 import com.example.skillforge.repository.SkillRepository;
+import com.example.skillforge.repository.UserRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
@@ -13,18 +16,23 @@ import java.util.stream.Collectors;
 public class SkillService {
 
     private final SkillRepository skillRepository;
+    private final UserRepository  userRepository;
 
-    public SkillService(SkillRepository skillRepository) {
+    public SkillService(SkillRepository skillRepository, UserRepository userRepository) {
         this.skillRepository = skillRepository;
+        this.userRepository  = userRepository;
     }
 
     // ─── CRUD ────────────────────────────────────────────────
 
     public List<Skill> getAll() {
-        return skillRepository.findAll();
+        // On ne récupère QUE les skills de l'utilisateur connecté
+        return skillRepository.findByUserId(getCurrentUser().getId());
     }
 
     public void addSkill(Skill skill) {
+        // On assigne l'utilisateur connecté avant de sauvegarder
+        skill.setUser(getCurrentUser());
         skillRepository.save(skill);
     }
 
@@ -89,5 +97,17 @@ public class SkillService {
                         (a, b) -> a,
                         LinkedHashMap::new
                 ));
+    }
+
+
+    // ─── Utilitaire : récupérer l'utilisateur connecté ───────
+    // SecurityContextHolder est fourni par Spring Security
+    // Il contient les infos de la session en cours
+    private User getCurrentUser() {
+        String username = SecurityContextHolder.getContext()
+                                               .getAuthentication()
+                                               .getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
     }
 }

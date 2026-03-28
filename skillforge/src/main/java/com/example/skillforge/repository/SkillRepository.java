@@ -1,4 +1,5 @@
 package com.example.skillforge.repository;
+
 import com.example.skillforge.model.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -6,7 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface SkillRepository extends JpaRepository<Skill, Long> {
+
+    List<Skill> findByUserId(Long userId);
 
     @Modifying
     @Transactional
