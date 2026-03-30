@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
@@ -82,47 +84,33 @@ public class UserService {
     }
 
     // ─── Changer avatar (URL externe) ─────────────────────────
+    @Transactional
     public String changeAvatarUrl(String avatarUrl) {
         if (avatarUrl == null || avatarUrl.isBlank()) return "L'URL ne peut pas être vide.";
-        User user = getCurrentUser();
-        user.setAvatarUrl(avatarUrl);
-        user.setAvatarData(null); // On efface l'image uploadée si on met une URL
-        userRepository.save(user);
+        userRepository.updateAvatarUrl(getCurrentUser().getId(), avatarUrl);
         return null;
     }
 
     // ─── Changer avatar (upload fichier) ──────────────────────
     // On convertit l'image en base64 pour la stocker directement en BDD
     // Format : "data:image/jpeg;base64,/9j/4AAQ..." utilisable directement dans un <img src="">
+    @Transactional
     public String changeAvatarFile(MultipartFile file) {
         if (file == null || file.isEmpty()) return "Aucun fichier sélectionné.";
-
-        // Vérification du type de fichier
         String contentType = file.getContentType();
-        if (contentType == null || !contentType.startsWith("image/")) {
-            return "Le fichier doit être une image (JPG, PNG, GIF...).";
-        }
-
-        // Limite à 2 Mo pour éviter de surcharger la BDD
-        if (file.getSize() > 2 * 1024 * 1024) {
-            return "L'image ne doit pas dépasser 2 Mo.";
-        }
-
+        if (contentType == null || !contentType.startsWith("image/")) return "Le fichier doit être une image.";
+        if (file.getSize() > 5 * 1024 * 1024) return "L'image ne doit pas dépasser 5 Mo.";
         try {
-            byte[] bytes = file.getBytes();
-            String base64 = Base64.getEncoder().encodeToString(bytes);
-            // On préfixe avec le type MIME pour que le navigateur sache comment afficher
+            String base64 = Base64.getEncoder().encodeToString(file.getBytes());
             String dataUrl = "data:" + contentType + ";base64," + base64;
-
-            User user = getCurrentUser();
-            user.setAvatarData(dataUrl);
-            user.setAvatarUrl(null); // On efface l'URL externe si on uploade un fichier
-            userRepository.save(user);
+            userRepository.updateAvatarData(getCurrentUser().getId(), dataUrl);
             return null;
         } catch (IOException e) {
             return "Erreur lors de la lecture du fichier.";
         }
     }
+
+
 
     // ─── Supprimer le compte ──────────────────────────────────
     public String deleteAccount(String password) {

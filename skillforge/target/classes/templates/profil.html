@@ -45,22 +45,39 @@
 
     <!-- Avatar + identité -->
     <div class="nm-raised" style="padding:2rem;text-align:center;">
-      <div style="margin-bottom:1rem;">
-        <img th:if="${user.displayAvatar != null}" th:src="${user.displayAvatar}"
-             style="width:80px;height:80px;border-radius:50%;object-fit:cover;" alt="Avatar"/>
-        <div th:if="${user.displayAvatar == null}"
-             style="width:80px;height:80px;border-radius:50%;background:var(--bg);
+
+      <div style="margin-bottom:1rem;display:flex;justify-content:center;align-items:center;">
+
+        <!-- Image uploadée depuis le PC -->
+        <img th:if="${user.avatarData != null}"
+            th:src="${user.avatarData}"
+            style="width:80px;height:80px;border-radius:50%;object-fit:cover;display:block;"
+            alt="Avatar"/>
+
+        <!-- URL externe (seulement si pas d'image uploadée) -->
+        <img th:if="${user.avatarData == null and user.avatarUrl != null}"
+            th:src="${user.avatarUrl}"
+            style="width:80px;height:80px;border-radius:50%;object-fit:cover;display:block;"
+            alt="Avatar"/>
+
+        <!-- Initiale (seulement si aucun avatar) -->
+        <div th:if="${user.avatarData == null and user.avatarUrl == null}"
+            style="width:80px;height:80px;border-radius:50%;background:var(--bg);
                     box-shadow:6px 6px 14px var(--shadow-d),-6px -6px 14px var(--shadow-l);
                     display:flex;align-items:center;justify-content:center;
-                    font-family:'Playfair Display',serif;font-size:28px;color:var(--accent);margin:0 auto;">
+                    font-family:'Playfair Display',serif;font-size:28px;color:var(--accent);">
           <span th:text="${#strings.toUpperCase(#strings.substring(user.username,0,1))}">H</span>
         </div>
+
       </div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:var(--text-1);margin-bottom:4px;"
-          th:text="${user.username}">Hugo</h2>
-      <p style="font-size:13px;color:var(--text-3);margin-bottom:4px;" th:text="${user.email}">hugo@ex.com</p>
-      <p style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:500;"
-         th:text="${user.role}">USER</p>
+
+      <h2 style="font-family:'Playfair Display',serif;font-size:22px;font-weight:400;
+                color:var(--text-1);margin-bottom:4px;" th:text="${user.username}">Hugo</h2>
+      <p style="font-size:13px;color:var(--text-3);margin-bottom:4px;"
+        th:text="${user.email}">hugo@exemple.com</p>
+      <p style="font-size:10px;letter-spacing:2px;text-transform:uppercase;
+                color:var(--accent);font-weight:500;" th:text="${user.role}">USER</p>
+
     </div>
 
     <!-- Stats -->

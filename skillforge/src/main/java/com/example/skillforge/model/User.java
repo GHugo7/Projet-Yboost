@@ -30,7 +30,6 @@ public class User {
 
     // Image uploadée depuis le PC, stockée en base64
     // On utilise @Lob car le texte peut être très long
-    @Lob
     @Column(name = "avatar_data", columnDefinition = "TEXT")
     private String avatarData;
 
