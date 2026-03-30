@@ -2,10 +2,14 @@ F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\confi
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\controller\AuthController.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\controller\ExportController.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\controller\HomeController.java
+F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\controller\ProfileController.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\model\Skill.java
+F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\model\SkillHistory.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\model\User.java
+F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\repository\SkillHistoryRepository.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\repository\SkillRepository.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\repository\UserRepository.java
+F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\service\AdminService.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\service\ExportService.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\service\SkillService.java
 F:\git clone\Projet-Yboost\skillforge\src\main\java\com\example\skillforge\service\UserDetailsServiceImpl.java

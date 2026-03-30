@@ -1,7 +1,9 @@
 package com.example.skillforge.service;
 
 import com.example.skillforge.model.Skill;
+import com.example.skillforge.model.SkillHistory;
 import com.example.skillforge.model.User;
+import com.example.skillforge.repository.SkillHistoryRepository;
 import com.example.skillforge.repository.SkillRepository;
 import com.example.skillforge.repository.UserRepository;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,28 +17,44 @@ import java.util.stream.Collectors;
 @Service
 public class SkillService {
 
-    private final SkillRepository skillRepository;
-    private final UserRepository  userRepository;
+    private final SkillRepository        skillRepository;
+    private final UserRepository         userRepository;
+    private final SkillHistoryRepository historyRepository;
 
-    public SkillService(SkillRepository skillRepository, UserRepository userRepository) {
-        this.skillRepository = skillRepository;
-        this.userRepository  = userRepository;
+    public SkillService(SkillRepository skillRepository,
+                        UserRepository userRepository,
+                        SkillHistoryRepository historyRepository) {
+        this.skillRepository   = skillRepository;
+        this.userRepository    = userRepository;
+        this.historyRepository = historyRepository;
     }
 
-    // ─── CRUD ────────────────────────────────────────────────
+    // ─── Utilitaire ───────────────────────────────────────────
+    private User getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    }
+
+    // ─── CRUD avec historique ─────────────────────────────────
 
     public List<Skill> getAll() {
-        // On ne récupère QUE les skills de l'utilisateur connecté
         return skillRepository.findByUserId(getCurrentUser().getId());
     }
 
     public void addSkill(Skill skill) {
-        // On assigne l'utilisateur connecté avant de sauvegarder
-        skill.setUser(getCurrentUser());
+        User user = getCurrentUser();
+        skill.setUser(user);
         skillRepository.save(skill);
+        // On enregistre l'action dans l'historique
+        historyRepository.save(new SkillHistory(user, skill.getName(), "AJOUT"));
     }
 
     public void deleteSkill(Long id) {
+        Skill skill = skillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Compétence introuvable"));
+        User user = getCurrentUser();
+        historyRepository.save(new SkillHistory(user, skill.getName(), "SUPPRESSION"));
         skillRepository.deleteById(id);
     }
 
@@ -47,11 +65,12 @@ public class SkillService {
 
     public void updateSkill(Long id, Skill updated) {
         skillRepository.updateSkill(id, updated.getName(), updated.getCategory(), updated.getLevel());
+        User user = getCurrentUser();
+        historyRepository.save(new SkillHistory(user, updated.getName(), "MODIFICATION"));
     }
 
-    // ─── Stats pour le tableau de bord ───────────────────────
+    // ─── Stats ────────────────────────────────────────────────
 
-    /** Nombre de catégories distinctes (catégories non nulles/vides) */
     public long countCategories() {
         return getAll().stream()
                 .map(Skill::getCategory)
@@ -60,28 +79,17 @@ public class SkillService {
                 .count();
     }
 
-    /** Niveau moyen arrondi à 1 décimale, ex : 3.4 */
     public String getAverageLevel() {
         List<Skill> skills = getAll();
         if (skills.isEmpty()) return "0";
-        double avg = skills.stream()
-                .mapToInt(Skill::getLevel)
-                .average()
-                .orElse(0);
+        double avg = skills.stream().mapToInt(Skill::getLevel).average().orElse(0);
         return String.format("%.1f", avg);
     }
 
-    /** Compétences au niveau maximum (5) */
     public long countMastered() {
-        return getAll().stream()
-                .filter(s -> s.getLevel() >= 5)
-                .count();
+        return getAll().stream().filter(s -> s.getLevel() >= 5).count();
     }
 
-    /**
-     * Progression par catégorie en pourcentage (niveau moyen / 5 * 100).
-     * Retourne une map triée par catégorie : { "Backend" -> 80, "Design" -> 60, … }
-     */
     public Map<String, Integer> getProgressByCategory() {
         return getAll().stream()
                 .filter(s -> s.getCategory() != null && !s.getCategory().isBlank())
@@ -99,15 +107,8 @@ public class SkillService {
                 ));
     }
 
-
-    // ─── Utilitaire : récupérer l'utilisateur connecté ───────
-    // SecurityContextHolder est fourni par Spring Security
-    // Il contient les infos de la session en cours
-    private User getCurrentUser() {
-        String username = SecurityContextHolder.getContext()
-                                               .getAuthentication()
-                                               .getName();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Utilisateur introuvable"));
+    // ─── Historique ───────────────────────────────────────────
+    public List<SkillHistory> getHistory() {
+        return historyRepository.findTop20ByUserIdOrderByCreatedAtDesc(getCurrentUser().getId());
     }
 }

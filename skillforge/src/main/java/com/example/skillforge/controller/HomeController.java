@@ -5,6 +5,7 @@ import com.example.skillforge.service.SkillService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HomeController {
@@ -17,11 +18,11 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        model.addAttribute("skills",              skillService.getAll());
-        model.addAttribute("categories",          skillService.countCategories());
-        model.addAttribute("avgLevel",            skillService.getAverageLevel());
-        model.addAttribute("mastered",            skillService.countMastered());
-        model.addAttribute("progressByCategory",  skillService.getProgressByCategory());
+        model.addAttribute("skills",             skillService.getAll());
+        model.addAttribute("categories",         skillService.countCategories());
+        model.addAttribute("avgLevel",           skillService.getAverageLevel());
+        model.addAttribute("mastered",           skillService.countMastered());
+        model.addAttribute("progressByCategory", skillService.getProgressByCategory());
         return "index";
     }
 
@@ -32,14 +33,16 @@ public class HomeController {
     }
 
     @PostMapping("/add")
-    public String addSkill(@ModelAttribute Skill skill) {
+    public String addSkill(@ModelAttribute Skill skill, RedirectAttributes ra) {
         skillService.addSkill(skill);
+        ra.addFlashAttribute("success", "Compétence ajoutée avec succès !");
         return "redirect:/";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteSkill(@PathVariable Long id) {
+    public String deleteSkill(@PathVariable Long id, RedirectAttributes ra) {
         skillService.deleteSkill(id);
+        ra.addFlashAttribute("success", "Compétence supprimée.");
         return "redirect:/";
     }
 
@@ -50,8 +53,9 @@ public class HomeController {
     }
 
     @PostMapping("/edit/{id}")
-    public String editSkill(@PathVariable Long id, @ModelAttribute Skill skill) {
+    public String editSkill(@PathVariable Long id, @ModelAttribute Skill skill, RedirectAttributes ra) {
         skillService.updateSkill(id, skill);
+        ra.addFlashAttribute("success", "Compétence modifiée avec succès !");
         return "redirect:/";
     }
 }

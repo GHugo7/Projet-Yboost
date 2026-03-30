@@ -24,22 +24,43 @@ public class User {
     @Column(name = "role", nullable = false, length = 20)
     private String role = "USER";
 
+    // URL externe (ex: https://exemple.com/photo.jpg)
+    @Column(name = "avatar_url", length = 500)
+    private String avatarUrl;
+
+    // Image uploadée depuis le PC, stockée en base64
+    // On utilise @Lob car le texte peut être très long
+    @Lob
+    @Column(name = "avatar_data", columnDefinition = "TEXT")
+    private String avatarData;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Skill> skills;
 
     public User() {}
 
-    public Long getId()           { return id; }
-    public String getUsername()   { return username; }
-    public String getEmail()      { return email; }
-    public String getPassword()   { return password; }
-    public String getRole()       { return role; }
-    public List<Skill> getSkills(){ return skills; }
+    // Retourne l'avatar à afficher : priorité à l'image uploadée, sinon l'URL externe
+    public String getDisplayAvatar() {
+        if (avatarData != null && !avatarData.isBlank()) return avatarData;
+        if (avatarUrl  != null && !avatarUrl.isBlank())  return avatarUrl;
+        return null;
+    }
 
-    public void setId(Long id)            { this.id = id; }
-    public void setUsername(String u)     { this.username = u; }
-    public void setEmail(String e)        { this.email = e; }
-    public void setPassword(String p)     { this.password = p; }
-    public void setRole(String r)         { this.role = r; }
-    public void setSkills(List<Skill> s)  { this.skills = s; }
+    public Long getId()            { return id; }
+    public String getUsername()    { return username; }
+    public String getEmail()       { return email; }
+    public String getPassword()    { return password; }
+    public String getRole()        { return role; }
+    public String getAvatarUrl()   { return avatarUrl; }
+    public String getAvatarData()  { return avatarData; }
+    public List<Skill> getSkills() { return skills; }
+
+    public void setId(Long id)           { this.id = id; }
+    public void setUsername(String u)    { this.username = u; }
+    public void setEmail(String e)       { this.email = e; }
+    public void setPassword(String p)    { this.password = p; }
+    public void setRole(String r)        { this.role = r; }
+    public void setAvatarUrl(String a)   { this.avatarUrl = a; }
+    public void setAvatarData(String a)  { this.avatarData = a; }
+    public void setSkills(List<Skill> s) { this.skills = s; }
 }

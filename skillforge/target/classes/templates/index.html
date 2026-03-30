@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="fr">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -12,16 +14,12 @@
   <div class="logo">Skill<span>Forge</span></div>
   <div class="nav-links">
     <a class="nav-link active">Compétences</a>
-    <button class="nav-link" onclick="document.getElementById('exportModal').classList.add('open')">
-      Exporter
-    </button>
+    <button class="nav-link" onclick="document.getElementById('exportModal').classList.add('open')">Exporter</button>
     <form th:action="@{/logout}" method="post" style="margin:0;">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-      <button type="submit" class="nav-link" style="border:none;background:none;cursor:pointer;">
-        Déconnexion
-      </button>
+      <button type="submit" class="nav-link" style="border:none;background:none;cursor:pointer;">Déconnexion</button>
     </form>
-    <button class="nav-btn" onclick="location.href='/add'">+ Ajouter</button>
+    <a th:href="@{/profil}" class="nav-btn">Profil</a>
   </div>
 </nav>
 
@@ -29,7 +27,6 @@
   <div class="modal-card nm-raised">
     <p class="form-eyebrow">Choisir un format</p>
     <h2 class="form-title" style="font-size:22px;">Exporter mes <em>compétences</em></h2>
-
     <div class="export-options">
       <a th:href="@{/export/pdf}" class="export-option nm-raised">
         <span class="export-option-icon">📄</span>
@@ -47,13 +44,12 @@
         <span class="export-option-desc">Pour les développeurs</span>
       </a>
     </div>
-
     <button class="btn-cancel" style="width:100%;margin-top:1.5rem;border-radius:50px;"
-            onclick="document.getElementById('exportModal').classList.remove('open')">
-      Annuler
-    </button>
+            onclick="document.getElementById('exportModal').classList.remove('open')">Annuler</button>
   </div>
 </div>
+
+<div th:if="${success}" class="toast" id="toast" th:text="${success}"></div>
 
 <div class="hero">
   <div>
@@ -90,7 +86,10 @@
   <div>
     <p class="section-label">Mes compétences</p>
     <div class="skills-grid">
-
+      <div th:if="${#lists.isEmpty(skills)}"
+           style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--text-4);font-size:13px;">
+        Aucune compétence pour l'instant — ajoutez-en une !
+      </div>
       <div class="nm-raised skill-card" th:each="skill : ${skills}">
         <div class="skill-actions">
           <a th:href="@{/edit/{id}(id=${skill.id})}">
@@ -107,12 +106,18 @@
                th:class="${i <= skill.level} ? 'star on' : 'star off'"></div>
         </div>
       </div>
-
       <a th:href="@{/add}" class="add-card">
         <div class="plus-wrap">+</div>
         Nouvelle compétence
       </a>
-
+    </div>
+    <div class="hint">
+      <p class="hint-title">Indication</p>
+      <p class="hint-text">⭐ Débutant</p>
+      <p class="hint-text">⭐⭐ Intermédiaire</p>
+      <p class="hint-text">⭐⭐⭐ Avancé</p>
+      <p class="hint-text">⭐⭐⭐⭐ Expert</p>
+      <p class="hint-text">⭐⭐⭐⭐⭐ Maître</p>
     </div>
   </div>
 
@@ -123,8 +128,6 @@
       <p class="quote-text">Un expert est une personne qui a commis toutes les erreurs possibles dans un domaine très précis.</p>
       <p class="quote-author">— Niels Bohr</p>
     </div>
-
-
     <div class="nm-raised progress-card">
       <p class="progress-title">Progression par catégorie</p>
       <p class="progress-sub">Continuez à progresser</p>
@@ -139,18 +142,12 @@
       </div>
     </div>
   </div>
-    
-  <div class="hint">
-    <p class="hint-title">Indication</p>
-    <p class="hint-text">- 1 étoile = niveau 1 = débutant</p>
-    <p class="hint-text">- 2 étoiles = niveau 2 = intermédiaire</p>
-    <p class="hint-text">- 3 étoiles = niveau 3 = avancé</p>
-    <p class="hint-text">- 4 étoiles = niveau 4 = expert</p>
-    <p class="hint-text">- 5 étoiles = niveau 5 = maître</p>
-  </div>
 </div>
 
-<script th:src="@{/JavaScript/main.js}"></script>
+<footer>
+  <p class="footer-text">© 2026 SkillForge — Hugo</p>
+</footer>
 
+<script th:src="@{/js/main.js}"></script>
 </body>
 </html>
